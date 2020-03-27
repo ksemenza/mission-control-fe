@@ -23,7 +23,6 @@
 
 ## Project Overview
 
-
 Mission Control is a system that provisions, tracks, monitors and controls all of the IT resources (virtual, physical, non-physical and logical) for every product built and maintained by your organization. It allows you to keep tabs on deadlines, team members, costs, and everything you need to push your product across the finish line.
 
 When operating at scale, it's easy to get lost in a sea of information. Mission Control provides the clarity and centralization you need to assess your team's productivity and make executive decisions. Mission Control is a one-stop-shop that allows you to get the information you need and focus on what matters most - execution.
