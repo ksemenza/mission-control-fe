@@ -5,7 +5,8 @@ export default function EditUser() {
   const { register, handleSubmit } = useForm();
   const onSubmit = data => console.log(data);
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+      <h2>Edit/Update User</h2>
       <input name="firstName" placeholder="First Name" ref={register} /> <br/>
       <input name="lastName" placeholder="Last Name" ref={register} /> <br/>
       <input
@@ -14,10 +15,6 @@ export default function EditUser() {
         name="Email"
         ref={register({ required: true, pattern: /^\S+@\S+$/i })}
       />
-      <select name="role" ref={register}>
-        <option value="Admin">Admin</option>
-        <option value="Manager">Manager</option>
-      </select>
       <br />
       <input type="submit" />
     </form>
