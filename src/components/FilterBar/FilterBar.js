@@ -1,43 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from "urql";
 import gql from "graphql-tag";
-// import { makeStyles } from '@material-ui/core';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
 import Project from "./Project";
 import './FilterBar.scss';
-
-// const useStyles = makeStyles({
-//   root: {
-//     margin: "2% auto"
-//   }
-// })
-
-// const FEED_SEARCH = gql`
-
-//   query filterQuery($filter: ProjectWhereInput!){
-//     project(where: $filter){
-//       id
-//       name
-//     }
-// }
-// `
+import { PROJECT_LIST_VIEW } from '../../components/ProjectList/Queries/projectQueries';
 
 const FilterBar = () => {
   // const classes = useStyles();
   const [searchFilter, setSearchFilter] = useState('');
   const [filterList, setFilterList] = useState([]);
 
-  // const [result, executeQuery] = useQuery({
-  //   query: FEED_SEARCH,
-  //   variables: {searchFilter} ,
-  //   pause: true
-  // })
+  const [result, executeQuery] = useQuery({
+    query: PROJECT_LIST_VIEW
+  })
 
-  // const execSearch = React.useCallback(() => {
-  //   executeQuery();
-  // }, [executeQuery])
+  const execSearch = React.useCallback(() => {
+    executeQuery();
+  }, [executeQuery])
 
-  // const projects = result.data ? result.data.feed : [];
+  const projects = result.data ? result.data.projects : [];
 
   //initialize the timer var
   let timer;
@@ -51,7 +32,7 @@ const FilterBar = () => {
   const handleSubmit = e => {
     //hitting enter key submits immediately
     e && e.preventDefault();
-    //clear the submit timer and submit form
+    //clear the submit timer and submit form automatically
     window.clearTimeout(timer);
     if (searchFilter !== '') {
       console.log('send new or update query to BE')
@@ -60,7 +41,9 @@ const FilterBar = () => {
         searchFilter
       ])
     }//end if
-    // execSearch();
+    //execute query
+    execSearch();
+    //reset searchFilter to empty str
     setSearchFilter('');
   }//end handleSubmit
 
@@ -69,7 +52,6 @@ const FilterBar = () => {
     let newFilterList = filterList.filter(ele => {
       return ele !== item;
     })
-    // console.log('newList: ', newFilterList);
     return setFilterList(newFilterList);
   }//end removeTag
 
@@ -87,14 +69,13 @@ const FilterBar = () => {
   }//end handleFocus
 
 
-  // useEffect(() => {
-  //   //delay then submit form/or hit enter to submit immediately
-  //   //eslint-disable-next-line
-  //   timer = window.setTimeout(() => {
-  //     // execSearch();
-  //     handleSubmit();
-  //   }, 2000)
-  // }, [SearchFilter])
+  useEffect(() => {
+    //delay then submit form/or hit enter to submit immediately
+    //eslint-disable-next-line
+    timer = window.setTimeout(() => {
+      handleSubmit();
+    }, 2000)
+  }, [searchFilter])
 
   return (
     <>
@@ -131,10 +112,8 @@ const FilterBar = () => {
 
       </form>
 
-
-      {/* {projects.map((project, index) => (
-        <Project key={project.id} project={project} index={index} />
-      ))} */}
+          {/* test render query results */}
+      {projects && console.log('projects: ', projects)}
     </>
   )
 }
