@@ -70,7 +70,7 @@ const client = new Client({
   url: `${process.env.REACT_APP_URQL_URL}`,
   exchanges: [dedupExchange, cache, fetchExchange],
   fetchOptions: () => {
-    const token = getToken();
+    const token = `Prisma_token` || getToken();
     return {
       headers: { authorization: `Bearer ${token}` },
     };
