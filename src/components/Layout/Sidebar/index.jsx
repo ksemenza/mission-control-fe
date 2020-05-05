@@ -13,9 +13,29 @@ import {
   topLinks,
   bottomLinks,
 } from './Sidebar.module.scss';
+import { useMutation } from 'urql';
+import { CREATE_PERSON } from '../../Project/Queries';
+import { useEffect } from 'react';
 
 const Sidebar = ({ logout }) => {
+  const [, executeMutation] = useMutation(CREATE_PERSON);
   const location = useLocation();
+
+  // const newUser = JSON.parse(localStorage.getItem('okta-token-storage'));
+  // console.log('***LOOK HERE***', newUser.idToken.claims);
+
+  // useEffect(() => {
+  //   const newPerson = () => {
+  //     executeMutation({
+  //       variables: {
+  //         name,
+  //         email,
+  //       },
+  //     });
+  //     newPerson();
+  //   };
+  // }, []);
+
   return (
     <div className={sidebar}>
       <div className={logoContainer}>

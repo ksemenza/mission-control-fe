@@ -451,3 +451,12 @@ export const UPDATE_STATUS_DISPLAY = gql`
     }
   }
 `;
+
+export const CREATE_PERSON = gql`
+  mutation($name: String!, $email: String!) {
+    createPerson(data: { name: $name, email: $email }) {
+      id
+      name
+    }
+  }
+`;
