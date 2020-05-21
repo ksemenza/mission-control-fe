@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import { useQuery, useMutation, refetchQueries} from 'urql';
 
 import { GET_ALL_TAGS as query } from '../Queries/TagQueries';
+import { GET_TAGS as getTagQuery} from '../Queries/TagQueries';
 import { CREATE_TAG as createTagQuery} from '../Queries/TagQueries';
 import {CONNECT_TO_PROJECT as connectToProjectQuery} from '../Queries/TagQueries';
 import { UPDATE_TAG as editTagQuery} from '../Queries/TagQueries';
@@ -73,6 +74,8 @@ const Tags = ({ projectId }) => {
   const [paused, setPaused] = useState(false);
  // let tagData;
   const [state, reexecuteQuery] = useQuery({query, variables: idObj, pause: paused})
+  const [tagExists, executeGetTags] = useQuery({query: getTagQuery})
+  //const [tagData] = useQuery({getTagQuery, variables: {}})
   const {data, fetching, error} = state;
   //console.log(state)
  // tagData = useRef(data)
@@ -160,39 +163,55 @@ const Tags = ({ projectId }) => {
       setTagName(e.target.value);
     }//end handleChange
 
-  // Handling submit of new tag input field
+
+    const connectingTag = (connectingTagId) => {
+      connectTag({data: {
+        project: {
+          connect: {
+            id: projectId
+          }
+        },
+        tag: {
+          connect: {
+            id: connectingTagId
+                  }
+                }
+              }
+            }
+        ).then((results) => {
+          // Refetch the query and skip the cache
+          setPaused(false)
+          reexecuteQuery({ requestPolicy: 'network-only'});
+        })
+    }
+      // Handling submit of new tag input field
     const handleSubmit = e => {
       e && e.preventDefault();
+      let connectingTagId;
       console.log({projectId})
       if (tagName !== '') {
         console.log('send new or update query to BE');
-        //Using create tag mutation
-        addTag({tag: {name: tagName}
+
+        let existingTag = false;
+        tagExists.data.tags.map(tag => {
+          if (tag.name == tagName) {
+            existingTag = {name: tagName, id: tag.id}
+            console.log(existingTag)
+          }
+        })
+
+        if (existingTag.id) {
+          connectingTagId = existingTag.id
+          connectingTag(connectingTagId)
+
+        } else {
+          addTag({tag: {name: tagName}
           }).then((results) => {
-            //get results of add tag for tag id
-            console.log(results)
-            if (results.error) {
-              console.log(results.error)
-            } else {
-              connectTag({data: {
-                project: {
-                  connect: {
-                    id: projectId
-                  }
-                },
-                tag: {
-                      connect: {
-                        id: results.data.createTag.id
-                      }
-                    }
-                  }
-                }
-            )}}).then((results) => {
-              // Refetch the query and skip the cache
-              setPaused(false)
-              reexecuteQuery({ requestPolicy: 'network-only'});
-            })
+            connectingTagId = results.data.createTag.id
+            connectingTag(connectingTagId)
+            })}
             setTagName('');
+
       }//end if
       //reset to empty str
     }//end handleSubmit

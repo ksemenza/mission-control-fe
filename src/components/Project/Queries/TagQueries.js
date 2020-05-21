@@ -13,10 +13,11 @@ query getProjectTags($projectId: ID!) {
   }
 }`;
 
-export const GET_TAG = gql`
-query getTag($name: String!) {
-  tag(where: {name: $name}) {
+export const GET_TAGS = gql`
+query {
+  tags {
     id
+    name
   }
 }`;
 export const CREATE_TAG = gql`
