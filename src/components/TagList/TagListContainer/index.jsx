@@ -26,7 +26,7 @@ const TagListContainer = ({ children, statusColumn }) => {
                     className={tagData === true ? rtc : hiddenName}
                     key={tagData.id}
                   >
-                    {tagData.name}
+                    {tagData.name, tagData.projects}
                    
                   </th>
                 ))

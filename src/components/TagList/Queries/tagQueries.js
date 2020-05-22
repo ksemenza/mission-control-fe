@@ -7,6 +7,10 @@ export const TAG_LIST_VIEW = gql`
       id
       name 
       isUsed
+      projects {
+        id
+        
+      }
     }    
   }
 `;
@@ -15,6 +19,17 @@ export const GET_ALL_TAGS = gql`
     tags {
       id
       name
+      projects {
+        name
+      }
     }
 }
 `;
+
+export const GET_ALL_TAG_RELATIONS = gql`
+  query getRelations($id: ID!) {
+    projectTagElements(where: {tag : {id: $id}}) {
+      name
+      id
+    }
+  }`;

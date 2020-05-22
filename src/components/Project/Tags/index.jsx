@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useQuery, useMutation, refetchQueries } from "urql";
+import React, { useState } from "react";
+import { useQuery, useMutation } from "urql";
 
 import { GET_ALL_TAGS as query } from '../Queries/TagQueries';
-import { GET_TAGS as getTagQuery} from '../Queries/TagQueries';
 import { CREATE_TAG as createTagQuery} from '../Queries/TagQueries';
 import { CONNECT_TO_PROJECT as connectToProjectQuery} from '../Queries/TagQueries';
 import { UPDATE_TAG as editTagQuery} from '../Queries/TagQueries';
@@ -57,26 +56,22 @@ const useStyles = makeStyles({
 
 const Tags = ({ projectId }) => {
   const classes = useStyles();
-  //Trying to just get the projectId directly from the URL, so useQuery wouldn't think
-  //it was constantly updating. Didn't work.
-  //var url = window.location.pathname;
-  //var projectId = url.substring(url.lastIndexOf('/') + 1);
+
   var idObj = { projectId: projectId };
 
   // Not using delete tag for the time being, just disconnecting tags from projects.
   // const [deleteTagResults, deleteTag] = useMutation(deleteTagQuery)
   const [tagName, setTagName] = useState("");
-  // Attempting to use this state "paused" to control how many times the useQuery would get called
+  // Attempting to use this state "paused" to control how many times the useQuery gets called
   const [paused, setPaused] = useState(false);
-  // let tagData;
+
   const [state, reexecuteQuery] = useQuery({
     query,
     variables: idObj,
     pause: paused,
   });
- // const [tagExists] = useQuery({
-   // query: getTagQuery,
-  //})
+
+
   const { data, fetching, error } = state;
 
   const [addTagResults, addTag] = useMutation(createTagQuery);
@@ -90,15 +85,6 @@ const Tags = ({ projectId }) => {
     oldName: "",
     newName: "",
   });
-
- //TODO Delete unneed code 
-  // useEffect(() => {
-  //   if (data) {
-  //     if (!paused) {
-  //       setPaused(true);
-  //     }
-  //   }
-  // }, [data]);
 
   const editTag = (element) => {
     if (edit.active) {
@@ -201,7 +187,7 @@ const Tags = ({ projectId }) => {
       // Handling submit of new tag input field
     const handleSubmit = e => {
       e && e.preventDefault();
-      setTagName('');
+
       let connectingTagId;
       console.log({projectId})
       if (tagName !== '') {
@@ -227,14 +213,14 @@ const Tags = ({ projectId }) => {
 
       }//end if
       //reset to empty str
+      setTagName('');
     }//end handleSubmit
 
 
   const handleDelete = (id) => {
-    //Using delete tag mutation
+    //Using disconnect tag mutation
     disconnectTag({ id: id }).then(() => {
       // Refetch the query and skip the cache
-      // setPaused(false);
       reexecuteQuery({ requestPolicy: "network-only" });
     });
   };
