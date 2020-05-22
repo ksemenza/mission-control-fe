@@ -74,9 +74,10 @@ const Tags = ({ projectId }) => {
     variables: idObj,
     pause: paused,
   });
+ // const [tagExists] = useQuery({
+   // query: getTagQuery,
+  //})
   const { data, fetching, error } = state;
-  //console.log(state)
-  // tagData = useRef(data)
 
   const [addTagResults, addTag] = useMutation(createTagQuery);
   const [connectTagResults, connectTag] = useMutation(connectToProjectQuery);
@@ -94,8 +95,8 @@ const Tags = ({ projectId }) => {
     if (data) {
       if (!paused) {
         setPaused(true);
-      }
     }
+  }
   }, [data]);
 
   const editTag = element => {
@@ -165,7 +166,7 @@ const Tags = ({ projectId }) => {
           // just using reexecuteQuery it querys an infinite number of times.
           // When using just setPaused, it can sometimes lead to viewing
           // stale tag data.
-          setPaused(false);
+          //setPaused(false);
           reexecuteQuery({ requestPolicy: 'network-only' });
           setEdit({ id: '', active: false, oldName: '', newName: '' });
         }
@@ -197,26 +198,26 @@ const Tags = ({ projectId }) => {
             }
         ).then((results) => {
           // Refetch the query and skip the cache
-          setPaused(false)
+          //setPaused(false)
           reexecuteQuery({ requestPolicy: 'network-only'});
         })
     }
       // Handling submit of new tag input field
     const handleSubmit = e => {
       e && e.preventDefault();
+      setTagName('');
       let connectingTagId;
       console.log({projectId})
       if (tagName !== '') {
         console.log('send new or update query to BE');
 
         let existingTag = false;
-        tagExists.data.tags.map(tag => {
+        data.tags.map(tag => {
           if (tag.name == tagName) {
             existingTag = {name: tagName, id: tag.id}
             console.log(existingTag)
           }
         })
-
         if (existingTag.id) {
           connectingTagId = existingTag.id
           connectingTag(connectingTagId)
@@ -227,31 +228,19 @@ const Tags = ({ projectId }) => {
             connectingTagId = results.data.createTag.id
             connectingTag(connectingTagId)
             })}
-            setTagName('');
 
       }//end if
       //reset to empty str
     }//end handleSubmit
-  
-    const handleDelete = (id) => {
-       //Using delete tag mutation
-      disconnectTag({id: id
-        }).then(() => {
-          // Refetch the query and skip the cache
-          // setPaused(false);
-          reexecuteQuery({ requestPolicy: 'network-only' });
-        });
-      setTagName('');
-    } //end if
-    //reset to empty str
-  }; //end handleSubmit
+
 
   const handleDelete = id => {
     //Using delete tag mutation
     disconnectTag({ id: id }).then(() => {
       // Refetch the query and skip the cache
-      setPaused(false);
+      //setPaused(false)
       reexecuteQuery({ requestPolicy: 'network-only' });
+      //executeQuery({ requestPolicy: 'network-only' });
     });
   };
   if (fetching) {
@@ -264,7 +253,7 @@ const Tags = ({ projectId }) => {
   if (!data) {
     return <h1> hmmm, no data...</h1>;
   }
-  if (data) {
+
     return (
       <>
         <TextField
@@ -299,7 +288,6 @@ const Tags = ({ projectId }) => {
         </div>
       </>
     );
-  }
 };
 
 export default Tags;

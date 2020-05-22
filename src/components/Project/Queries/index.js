@@ -111,10 +111,7 @@ export const PROJECT_VIEW_QUERY = gql`
       name
 
       tags {
-        id
-        project {
-          id
-        }
+        name
       }
 
       status {
