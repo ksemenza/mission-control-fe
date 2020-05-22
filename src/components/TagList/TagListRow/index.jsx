@@ -78,8 +78,8 @@ const TagRow = ({ tag, id, name, isUsed, tagArr, executeOperation }) => {
     });
   };
 
+  //Tenary statement for ediit
   const handleClickEdit = () => {
-    
     setEditing(!editing);
     console.log(editing);
   };
