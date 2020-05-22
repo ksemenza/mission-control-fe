@@ -2,6 +2,10 @@ import gql from 'graphql-tag';
 
 export const GET_ALL_TAGS = gql`
 query getProjectTags($projectId: ID!) {
+  tags {
+    id
+    name
+  }
   project(where: {id: $projectId}) {
    tags { 
      id
@@ -13,10 +17,11 @@ query getProjectTags($projectId: ID!) {
   }
 }`;
 
-export const GET_TAG = gql`
-query getTag($name: String!) {
-  tag(where: {name: $name}) {
+export const GET_TAGS = gql`
+query {
+  tags {
     id
+    name
   }
 }`;
 export const CREATE_TAG = gql`

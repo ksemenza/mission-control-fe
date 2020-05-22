@@ -3,6 +3,7 @@ import { useQuery, useMutation } from 'urql';
 import { Link } from 'react-router-dom';
 import { title } from './tagListRow.module.scss';
 import { GET_ALL_TAGS as getTagsQuery } from "../Queries/tagQueries";
+import { GET_ALL_RELATIONS as getRelationsQuery } from "../Queries/tagQueries";
 import { CREATE_TAG as createTagQuery } from "../../Project/Queries/TagQueries";
 import { UPDATE_TAG as editTagQuery } from "../../Project/Queries/TagQueries";
 import { DELETE_TAG as deleteTagQuery } from "../../Project/Queries/TagQueries";
@@ -18,6 +19,7 @@ const TagRow = ({ tag, id, name, isUsed, tagArr, executeOperation }) => {
   const TagsArr = [];
 
   const [state, reexecuteQuery] = useQuery({ query: getTagsQuery });
+  //const [relations, reexecuteRelationsQuery] = useQuery({ query: getRelationsQuery, variables: {}})
   const [deleteTagResults, deleteTag] = useMutation(deleteTagQuery);
   const [tagName, setTagName] = useState('');
   const [addTagResults, addTag] = useMutation(createTagQuery);
@@ -66,8 +68,13 @@ const TagRow = ({ tag, id, name, isUsed, tagArr, executeOperation }) => {
 
   // TODO Handle delete tag
   const handleDelete = id => {
-    deleteTag({ tag: { id } }).then(() => {
-      reexecuteQuery({ requestPolicy: 'network-only' });
+    deleteTag({ tag: { id } }).then((result) => {
+      console.log(result)
+      if (result.error) {
+        window.alert("I'm sorry, that tag is currently associated with a project.")
+      } else {
+        reexecuteQuery({ requestPolicy: 'network-only' });
+      }
     });
   };
 
@@ -115,7 +122,10 @@ const TagRow = ({ tag, id, name, isUsed, tagArr, executeOperation }) => {
             </Link>
             <Link to={`/tag/${tag.id}`} className={title}>
               {tag.name}
+
             </Link>
+            <h1> {tag.projects} </h1>
+            {console.log(tag)}
           </div>
         )}
       </td>

@@ -7,7 +7,6 @@ export const TAG_LIST_VIEW = gql`
       id
       name 
       isUsed
-
     }    
   }
 `;
