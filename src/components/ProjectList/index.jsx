@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useQuery } from 'urql';
-import { PROJECT_LIST_VIEW as query } from './Queries/projectQueries';
 import ProjectListContainer from './ProjectListContainer';
 import ProjectListRow from './ProjectListRow';
 import Settings from '../Settings/Settings';

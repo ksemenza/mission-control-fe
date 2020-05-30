@@ -19,6 +19,14 @@ query getTag($name: String!) {
     id
   }
 }`;
+
+
+export const GET_TAG_ID = gql`
+query getTag($tagId: ID!) {
+  tag(where: {id: $tagId}) {
+    id
+  }
+}`;
 export const CREATE_TAG = gql`
     mutation createTag($tag: TagCreateInput!) {
 	    createTag(data: $tag) {
@@ -42,6 +50,25 @@ export const DISCONNECT_FROM_PROJECT = gql`
         id
       }
     }`;
+
+
+export const CONNECT_TO_TAG = gql`
+    mutation connectProjectToTag($data: ProjectTagElementCreateInput!) {
+      createProjectTagElement(data: $data 
+          )
+          {
+        id
+      }
+    }`;
+    
+export const DISCONNECT_FROM_TAG = gql`
+    mutation disconnectProjectToTag($id: ID!) {
+      deleteProjectTagElement(where: {id: $id})
+          {
+        id
+      }
+    }`;
+
 export const DELETE_TAG = gql`
     mutation deleteThisTag($tag: TagWhereUniqueInput!) {
 	    deleteTag(where: $tag) {

@@ -12,19 +12,14 @@ const FilterBar = (props) => {
 
   const projectSearchContext = useContext(ProjectSearchContext);
 
-  console.log('props line18')
-  console.log(props)
-
-
-
   //initialize the timer var
   let timer;
   const handleChange = e => {
     //reset timer on each key stroke
 
     //TODO UNCOMMENT CASE SENSITIVE
-    // e.persist();
-    // window.clearTimeout(timer);
+    e.persist();
+    window.clearTimeout(timer);
     setSearchFilter(e.target.value);
   }; //end handleChange
 
