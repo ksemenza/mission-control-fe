@@ -42,25 +42,18 @@ const useStyles = makeStyles({
 
 const Tags = ({ projectId }) => {
   const classes = useStyles();
-  // Trying to just get the projectId directly from the URL, so useQuery wouldn't think
-  // it was constantly updating. Didn't work.
-  // var url = window.location.pathname;
-  // var projectId = url.substring(url.lastIndexOf('/') + 1);
+
   var idObj = { projectId: projectId };
 
   // Not using delete tag for the time being, just disconnecting tags from projects.
-  // const [deleteTagResults, deleteTag] = useMutation(deleteTagQuery)
+
   const [tagName, setTagName] = useState('');
-  // Attempting to use this state "paused" to control how many times the useQuery would get called
-  const [paused, setPaused] = useState(false);
-  // let tagData;
+
   const [state, reexecuteQuery] = useQuery({
     query,
     variables: idObj,
   });
   const { data, fetching, error } = state;
-  // console.log(state)
-  // tagData = useRef(data)
 
 
   useEffect(() => {
@@ -187,14 +180,13 @@ e &&  e.preventDefault();
           reexecuteQuery({ requestPolicy: 'network-only' });
         }
       });
-    } // end if
-    // reset to empty str
-    
+    }    
     setTagName('')
   };
 
   const handleDelete = id => {
-    // disconnectTag deletes tag from project object but not from the tags indepent object
+    // disconnectTag relates to ProjectTagElement and disconnects 
+    //"deletes" tag from project obj but is still in tag obj
     disconnectTag({ id: id }).then(() => {
       reexecuteQuery({ requestPolicy: 'network-only' });
     });

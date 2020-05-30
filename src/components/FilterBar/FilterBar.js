@@ -4,20 +4,30 @@ import gql from 'graphql-tag';
 import { FILTERED_DATA as newQuery } from './FilterBarQueries';
 import { ProjectSearchContext } from '../../contexts/FilterBarContext';
 import './FilterBar.scss';
+// import { cleanup } from '@testing-library/react';
 
-const FilterBar = () => {
-  // const classes = useStyles();
+const FilterBar = (props) => {
+  
   const [searchFilter, setSearchFilter] = useState('');
   const [filterList, setFilterList] = useState([]);
 
+  // const { data, fetching, error } = state;
+
   const projectSearchContext = useContext(ProjectSearchContext);
+
+  console.log('props line18')
+  console.log(props)
+
+
 
   //initialize the timer var
   let timer;
   const handleChange = e => {
     //reset timer on each key stroke
-    e.persist();
-    window.clearTimeout(timer);
+
+    //TODO UNCOMMENT CASE SENSITIVE
+    // e.persist();
+    // window.clearTimeout(timer);
     setSearchFilter(e.target.value);
   }; //end handleChange
 

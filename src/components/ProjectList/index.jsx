@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useQuery } from 'urql';
 import { PROJECT_LIST_VIEW as query } from './Queries/projectQueries';
@@ -13,19 +13,20 @@ import { ProjectSearchContext } from '../../contexts/FilterBarContext';
 // The PROJECT_LIST_VIEW query matches against the currently authenticated user
 // and returns a list of projects that they are authorized to view.
 
-const ProjectListView = () => {
+const ProjectListView = (props) => {
   const projectSearchContext = useContext(ProjectSearchContext);
 
   const [state] = useQuery({
     query: newQuery,
     variables: {
       filter: {
-        name_contains: projectSearchContext.searchTerm,
+        name_contains: projectSearchContext.searchTerm.toLowerCase()
       },
     },
   });
 
   const { data, fetching, error } = state;
+
 
   if (error) {
     return (
@@ -36,10 +37,15 @@ const ProjectListView = () => {
   }
 
   if (fetching) {
+    // const searchQuery = data.projects.map(loc => {   console.log=(loc)  })
+
  return <LinearProgress style={{width:'70%', height:'8px', margin:'35px auto'}}  color="primary" />;
   } else {
-    console.log(data);
+    console.log(data.projects);
   }
+
+
+
 
   //<=====  Lab23 Notes 5/26/2020 ====>
   //<===== Uncommented after engineer manger's refactoring ====>
@@ -55,7 +61,9 @@ const ProjectListView = () => {
 
       <ProjectListContainer>
         {/* statusColumn={columns}> */}
-        {data.projects.map(project => (
+
+{    
+}        {data.projects.map(project => (
           <ProjectListRow
             key={project.id}
             project={project}
@@ -63,6 +71,8 @@ const ProjectListView = () => {
             // statusDisplay={columns.display}
           />
         ))}
+
+
       </ProjectListContainer>
     </div>
   );
