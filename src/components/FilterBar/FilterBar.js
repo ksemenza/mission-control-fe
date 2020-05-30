@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useQuery } from 'urql';
-import gql from 'graphql-tag';
-import { FILTERED_DATA as newQuery } from './FilterBarQueries';
 import { ProjectSearchContext } from '../../contexts/FilterBarContext';
 import './FilterBar.scss';
 // import { cleanup } from '@testing-library/react';

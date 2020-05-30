@@ -37,4 +37,18 @@ export const FILTERED_DATA = gql`
       }
     }
   }
+
+
+
 `;
+
+
+
+export const FILTER_SEARCH_KW_QUERY = gql`
+  query FILTER_SEARCH_KW_QUERY($filterValue:String!) {
+    filterSEarch(filterValue: $filterValue) {
+      id
+      name
+    }
+  }
+`

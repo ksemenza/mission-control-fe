@@ -20,8 +20,7 @@ const ProjectListView = (props) => {
     query: newQuery,
     variables: {
       filter: {
-        name_contains: projectSearchContext.searchTerm.toLowerCase()
-      },
+        name_contains: projectSearchContext.searchTerm      },
     },
   });
 

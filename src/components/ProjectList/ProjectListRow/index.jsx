@@ -14,9 +14,6 @@ const ProjectRow = ({ project, statusColumn }) => {
   const statusLabelsArr = [];
 
   //TODO case sensitivity RETURNS NAME IN LIST VIEW
-  // const projectName = project.name
-  // console.log(`ProjectListRow line 19 ${projectName}`)
-  // console.log(projectName)
 
   // Display status indicators if present
   if (statusColumn && statusColumn.length > 0) {
